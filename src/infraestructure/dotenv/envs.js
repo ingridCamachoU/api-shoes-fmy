@@ -19,7 +19,7 @@ const vars = {
     DB_NAME: getEnv('DB_NAME', true),
     DB_USERNAME: getEnv('DB_USERNAME', true),
     DB_PASSWORD: getEnv('DB_PASSWORD', true),
-    NODE_ENV: getEnv('NODE_ENV', true),
+    NODE_ENV: getEnv('NODE_ENV', false),
 };
 
 module.exports = vars;
