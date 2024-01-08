@@ -1,37 +1,37 @@
-const env = require('./infraestructure/dotenv/envs');
+const env = require('./src/infraestructure/dotenv/envs');
 
-const Server = require('./infraestructure/express/express-server');
+const Server = require('./src/infraestructure/express/express-server');
 
 /**
  * Postgresql
  */
-const { createPostgresClient } = require('./infraestructure/db/postgres');
+const { createPostgresClient } = require('./src/infraestructure/db/postgres');
 
 /**
  * Repositories
  */
-const PostgresRepositoryCategory = require('./adapters/repositories/postgres/postgres-repository-category');
-const PostgresRepositoryProduct = require('./adapters/repositories/postgres/postgres-repository-product');
-const PostgresRepositoryUser = require('./adapters/repositories/postgres/postgres-repository-user');
-const PostgresRepositoryOrder = require('./adapters/repositories/postgres/postgres-repository-order');
+const PostgresRepositoryCategory = require('./src/adapters/repositories/postgres/postgres-repository-category');
+const PostgresRepositoryProduct = require('./src/adapters/repositories/postgres/postgres-repository-product');
+const PostgresRepositoryUser = require('./src/adapters/repositories/postgres/postgres-repository-user');
+const PostgresRepositoryOrder = require('./src/adapters/repositories/postgres/postgres-repository-order');
 
 /**
  * Config Routers
  */
-const ConfigureRouterCategory = require('./adapters/http/category/http-category-router');
-const ConfigureRouterProduct = require('./adapters/http/product/http-product-router');
-const ConfigureRouterUser = require('./adapters/http/user/http-user-router');
-const ConfigureRouterOrder = require('./adapters/http/order/http-order-router');
+const ConfigureRouterCategory = require('./src/adapters/http/category/http-category-router');
+const ConfigureRouterProduct = require('./src/adapters/http/product/http-product-router');
+const ConfigureRouterUser = require('./src/adapters/http/user/http-user-router');
+const ConfigureRouterOrder = require('./src/adapters/http/order/http-order-router');
 
 /**
  * UseCases
   */
-const UseCasesCategory = require('./application/usecases/usecases-category');
-const UseCasesProduct = require('./application/usecases/usecases-product');
-const UseCasesUser = require('./application/usecases/usecases-user');
-const UseCasesOrder = require('./application/usecases/usecases-order');
+const UseCasesCategory = require('./src/application/usecases/usecases-category');
+const UseCasesProduct = require('./src/application/usecases/usecases-product');
+const UseCasesUser = require('./src/application/usecases/usecases-user');
+const UseCasesOrder = require('./src/application/usecases/usecases-order');
 
-/* (async () => {
+(async () => {
     const postgresClient = await createPostgresClient(
         env.DB_USERNAME,
         env.DB_PASSWORD,
@@ -84,9 +84,9 @@ const UseCasesOrder = require('./application/usecases/usecases-order');
     server.addRouter('/api/v1/orders', routerOrder);
 
     server.listen(env.PORT);
-})(); */
+})();
 
-const express = require("express");
+/* const express = require("express");
 const app = express();
 
 require('dotenv').config();
@@ -100,4 +100,4 @@ router.get('/', (req, res) => {
 
 app.use("/api/v1/books", router);
 
-app.listen(env.PORT, () => console.log("Server is running on port 5000"));
+app.listen(env.PORT, () => console.log("Server is running on port 5000")); */
