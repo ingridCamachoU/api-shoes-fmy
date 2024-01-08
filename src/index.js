@@ -40,6 +40,7 @@ const UseCasesOrder = require('./application/usecases/usecases-order');
         env.DB_PORT,
     );
     const server = new Server();
+    console.log('server...');
 
     // categories
     const postgresRepositoryCategory = new PostgresRepositoryCategory(
@@ -62,6 +63,7 @@ const UseCasesOrder = require('./application/usecases/usecases-order');
     );
     const routerProduct = configureProductRouter.setRouter();
     server.addRouter('/api/v1/products', routerProduct);
+    console.log('end prod...');
 
     // user
     const postgresRepositoryUser = new PostgresRepositoryUser(
