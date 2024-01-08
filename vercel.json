@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "rewrites": [
         {
             "source": "/src/(.*)",
@@ -10,19 +9,6 @@
         {
             "src": "/src/index.js",
             "use": "@now/node"
-=======
-    "version": 2,
-    "builds": [
-        {
-            "src": "./src/index.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
->>>>>>> 89bf846be8d868149f2c3687b45e8c39b1b2ce82
         }
     ]
 }
