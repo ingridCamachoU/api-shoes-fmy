@@ -30,8 +30,8 @@ const UseCasesCategory = require('./application/usecases/usecases-category');
 const UseCasesProduct = require('./application/usecases/usecases-product');
 const UseCasesUser = require('./application/usecases/usecases-user');
 const UseCasesOrder = require('./application/usecases/usecases-order');
-console.log('prod...');
-(async () => {
+
+/* (async () => {
     const postgresClient = await createPostgresClient(
         env.DB_USERNAME,
         env.DB_PASSWORD,
@@ -40,7 +40,6 @@ console.log('prod...');
         env.DB_PORT,
     );
     const server = new Server();
-    console.log('server...');
 
     // categories
     const postgresRepositoryCategory = new PostgresRepositoryCategory(
@@ -63,7 +62,6 @@ console.log('prod...');
     );
     const routerProduct = configureProductRouter.setRouter();
     server.addRouter('/api/v1/products', routerProduct);
-    console.log('end prod...');
 
     // user
     const postgresRepositoryUser = new PostgresRepositoryUser(
@@ -86,15 +84,20 @@ console.log('prod...');
     server.addRouter('/api/v1/orders', routerOrder);
 
     server.listen(env.PORT);
-})();
-const server = new Server();
-const postgresRepositoryProduct = new PostgresRepositoryProduct(
-    null,
-);
-const useCasesProduct = new UseCasesProduct(postgresRepositoryProduct);
-const configureProductRouter = new ConfigureRouterProduct(
-    useCasesProduct,
-);
-const routerProduct = configureProductRouter.setRouter();
-server.addRouter('/api/v1/products', routerProduct);
-server.listen(env.PORT);
+})(); */
+
+const express = require("express");
+const app = express();
+
+require('dotenv').config();
+
+app.use(express.json());
+
+const router = express.Router();
+router.get('/', (req, res) => {
+    res.send('Hola mi server en express');
+});
+
+app.use("/api/v1/books", router);
+
+app.listen(env.PORT, () => console.log("Server is running on port 5000"));
