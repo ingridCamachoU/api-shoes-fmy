@@ -8,6 +8,7 @@ const getEnv = (name, required) => {
         console.error(`[error] No ${name} environment variable in .env file`);
         process.exit(1);
     }
+    console.log(env);
 
     return env || null;
 };
