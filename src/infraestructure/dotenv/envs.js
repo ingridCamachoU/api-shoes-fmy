@@ -12,16 +12,6 @@ const getEnv = (name, required) => {
     return env || null;
 };
 
-/* const vars = {
-    PORT: getEnv('PORT', true),
-    DB_HOST: getEnv('DB_HOST', true),
-    DB_PORT: getEnv('DB_PORT', true),
-    DB_NAME: getEnv('DB_NAME', true),
-    DB_USERNAME: getEnv('DB_USERNAME', true),
-    DB_PASSWORD: getEnv('DB_PASSWORD', true),
-    NODE_ENV: getEnv('NODE_ENV', false),
-}; */
-
 const vars = {
     PORT: process.env.PORT,
     DB_HOST: process.env.DB_HOST,
