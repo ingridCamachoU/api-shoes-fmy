@@ -87,3 +87,14 @@ console.log('prod...');
 
     server.listen(env.PORT);
 })();
+const server = new Server();
+const postgresRepositoryProduct = new PostgresRepositoryProduct(
+    null,
+);
+const useCasesProduct = new UseCasesProduct(postgresRepositoryProduct);
+const configureProductRouter = new ConfigureRouterProduct(
+    useCasesProduct,
+);
+const routerProduct = configureProductRouter.setRouter();
+server.addRouter('/api/v1/products', routerProduct);
+server.listen(env.PORT);
