@@ -85,18 +85,3 @@ const UseCasesOrder = require('./src/application/usecases/usecases-order');
 
     server.listen(envs.PORT);
 })();
-
-/*
-const server = new Server();
-const express = require("express");
-
-require('dotenv').config();
-
-const routerOrder = express.Router();
-routerOrder.get('/', (req, res) => {
-    res.send('Hola mi server en express');
-});
-server.addRouter('/api/v1/books', routerOrder);
-
-server.listen(envs.PORT);
- */
