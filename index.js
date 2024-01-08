@@ -86,18 +86,16 @@ const UseCasesOrder = require('./src/application/usecases/usecases-order');
     server.listen(env.PORT);
 })();
  */
+
+const server = new Server();
 const express = require("express");
-const app = express();
 
-// require('dotenv').config();
+require('dotenv').config();
 
-app.use(express.json());
-
-const router = express.Router();
-router.get('/', (req, res) => {
+const routerOrder = express.Router();
+routerOrder.get('/', (req, res) => {
     res.send('Hola mi server en express');
 });
+server.addRouter('/api/v1/books', routerOrder);
 
-app.use("/api/v1/books", router);
-
-app.listen(env.PORT, () => console.log("Server is running on port 5000"));
+server.listen(process.env.PORT);
