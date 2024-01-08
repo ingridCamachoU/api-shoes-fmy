@@ -1,0 +1,14 @@
+{
+    "rewrites": [
+        {
+            "source": "/src/(.*)",
+            "destination": "/src"
+        }
+    ],
+    "builds": [
+        {
+            "src": "/src/index.js",
+            "use": "@now/node"
+        }
+    ]
+}
