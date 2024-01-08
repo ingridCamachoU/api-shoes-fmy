@@ -31,7 +31,7 @@ const UseCasesProduct = require('./src/application/usecases/usecases-product');
 const UseCasesUser = require('./src/application/usecases/usecases-user');
 const UseCasesOrder = require('./src/application/usecases/usecases-order');
 
-(async () => {
+/* (async () => {
     const postgresClient = await createPostgresClient(
         env.DB_USERNAME,
         env.DB_PASSWORD,
@@ -85,8 +85,8 @@ const UseCasesOrder = require('./src/application/usecases/usecases-order');
 
     server.listen(env.PORT);
 })();
-
-/* const express = require("express");
+ */
+const express = require("express");
 const app = express();
 
 require('dotenv').config();
@@ -100,4 +100,4 @@ router.get('/', (req, res) => {
 
 app.use("/api/v1/books", router);
 
-app.listen(env.PORT, () => console.log("Server is running on port 5000")); */
+app.listen(env.PORT, () => console.log("Server is running on port 5000"));
