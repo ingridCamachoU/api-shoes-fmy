@@ -1,4 +1,4 @@
-const env = require('./src/infraestructure/dotenv/envs');
+const envs = require('./src/infraestructure/dotenv/envs');
 
 const Server = require('./src/infraestructure/express/express-server');
 
@@ -31,13 +31,13 @@ const UseCasesProduct = require('./src/application/usecases/usecases-product');
 const UseCasesUser = require('./src/application/usecases/usecases-user');
 const UseCasesOrder = require('./src/application/usecases/usecases-order');
 
-/* (async () => {
+(async () => {
     const postgresClient = await createPostgresClient(
-        env.DB_USERNAME,
-        env.DB_PASSWORD,
-        env.DB_NAME,
-        env.DB_HOST,
-        env.DB_PORT,
+        envs.DB_USERNAME,
+        envs.DB_PASSWORD,
+        envs.DB_NAME,
+        envs.DB_HOST,
+        envs.DB_PORT,
     );
     const server = new Server();
 
@@ -83,10 +83,10 @@ const UseCasesOrder = require('./src/application/usecases/usecases-order');
     const routerOrder = configureOrderRouter.setRouter();
     server.addRouter('/api/v1/orders', routerOrder);
 
-    server.listen(env.PORT);
+    server.listen(envs.PORT);
 })();
- */
 
+/*
 const server = new Server();
 const express = require("express");
 
@@ -98,4 +98,5 @@ routerOrder.get('/', (req, res) => {
 });
 server.addRouter('/api/v1/books', routerOrder);
 
-server.listen(env.PORT);
+server.listen(envs.PORT);
+ */
