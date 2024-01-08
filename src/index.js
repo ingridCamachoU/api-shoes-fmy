@@ -30,7 +30,7 @@ const UseCasesCategory = require('./application/usecases/usecases-category');
 const UseCasesProduct = require('./application/usecases/usecases-product');
 const UseCasesUser = require('./application/usecases/usecases-user');
 const UseCasesOrder = require('./application/usecases/usecases-order');
-
+console.log('prod...');
 (async () => {
     const postgresClient = await createPostgresClient(
         env.DB_USERNAME,
