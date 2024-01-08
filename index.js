@@ -1,4 +1,4 @@
-// const env = require('./src/infraestructure/dotenv/envs');
+const env = require('./src/infraestructure/dotenv/envs');
 
 const Server = require('./src/infraestructure/express/express-server');
 
