@@ -34,6 +34,9 @@ const ProductModel = (Client, categoryModel) => {
             color: {
                 type: DataTypes.STRING,
             },
+            gender: {
+                type: DataTypes.STRING,
+            },
             category_id: {
                 type: DataTypes.INTEGER,
             },

@@ -42,6 +42,7 @@ class PostgresRepositoryProducts {
                     'stock',
                     'color',
                     'talla',
+                    'gender',
                     'images',
                 ],
             });
@@ -77,6 +78,7 @@ class PostgresRepositoryProducts {
                     'stock',
                     'color',
                     'talla',
+                    'gender',
                     'images',
                 ],
 
@@ -116,6 +118,7 @@ class PostgresRepositoryProducts {
                 images: payload.images,
                 color: payload.color,
                 talla: payload.talla,
+                gender: payload.gender,
                 created_at: now,
                 updated_at: now,
             });

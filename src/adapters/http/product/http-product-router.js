@@ -45,6 +45,7 @@ module.exports = class ConfigureRouterProduct {
                 check('code', 'code is required').not().isEmpty(),
                 check('name', 'name is required').not().isEmpty(),
                 check('price', 'price is required').not().isEmpty(),
+                check('gender', 'gender is required').not().isEmpty(),
                 check('description', 'description is required').not().isEmpty(),
                 checkExact([
                     body('talla').isNumeric(),
@@ -56,6 +57,7 @@ module.exports = class ConfigureRouterProduct {
                     body('color').isLength({ min: 3 }),
                     body('price').isLength({ min: 3 }),
                     body('name').isLength({ min: 3 }),
+                    body('gender').isLength({ min: 3 }),
                     body('description').isLength({ min: 4 })], {
                     message: 'Too many fields specified',
                 }),
