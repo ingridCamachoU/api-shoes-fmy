@@ -26,6 +26,15 @@ class UseCasesProduct {
         };
     }
 
+    async createNewZiseProduct(payload, id) {
+        const [, error] = await this.repositoryProduct.createNewSizeProduct(
+            payload,
+            id,
+        );
+        if (!error) return { message: 'Created', code: 201 };
+        return { message: 'Conflict', code: 409, error };
+    }
+
     async deleteProductUseCase(id) {
         const { data, statusCode } = await this.repositoryProduct.deleteProductRepository(id);
         return { code: statusCode, data };

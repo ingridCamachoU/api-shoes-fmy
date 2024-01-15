@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-const ProductModel = (Client, categoryModel) => {
-    const product = Client.define(
-        'products',
+const SizeProductModel = (Client, sizeModel, productModel) => {
+    const sizeProduct = Client.define(
+        'sizes_products',
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -10,31 +10,13 @@ const ProductModel = (Client, categoryModel) => {
                 allowNull: false,
                 primaryKey: true,
             },
-            code: {
+            amount: {
                 type: DataTypes.INTEGER,
             },
-            name: {
-                type: DataTypes.STRING,
-            },
-            description: {
-                type: DataTypes.TEXT,
-            },
-            price: {
+            size_id: {
                 type: DataTypes.INTEGER,
             },
-            stock: {
-                type: DataTypes.INTEGER,
-            },
-            images: {
-                type: DataTypes.JSON,
-            },
-            color: {
-                type: DataTypes.STRING,
-            },
-            gender: {
-                type: DataTypes.STRING,
-            },
-            category_id: {
+            product_id: {
                 type: DataTypes.INTEGER,
             },
             created_at: {
@@ -58,18 +40,25 @@ const ProductModel = (Client, categoryModel) => {
             deletedAt: 'deleted_at',
         },
     );
-
-    categoryModel.hasMany(product, {
+    sizeModel.hasMany(sizeProduct, {
         foreignKey: 'id',
     });
-    product.belongsTo(categoryModel, {
-        as: 'category',
-        foreignKey: 'category_id',
+    sizeProduct.belongsTo(sizeModel, {
+        as: 'size',
+        foreignKey: 'size_id',
     });
 
-    return product;
+    productModel.hasMany(sizeProduct, {
+        foreignKey: 'id',
+    });
+    sizeProduct.belongsTo(productModel, {
+        as: 'product',
+        foreignKey: 'product_id',
+    });
+
+    return sizeProduct;
 };
 
 module.exports = {
-    ProductModel,
+    SizeProductModel,
 };

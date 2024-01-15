@@ -14,6 +14,7 @@ const PostgresRepositoryCategory = require('./src/adapters/repositories/postgres
 const PostgresRepositoryProduct = require('./src/adapters/repositories/postgres/postgres-repository-product');
 const PostgresRepositoryUser = require('./src/adapters/repositories/postgres/postgres-repository-user');
 const PostgresRepositoryOrder = require('./src/adapters/repositories/postgres/postgres-repository-order');
+const PostgresRepositorySize = require('./src/adapters/repositories/postgres/postgres-repository-size');
 
 /**
  * Config Routers
@@ -22,6 +23,7 @@ const ConfigureRouterCategory = require('./src/adapters/http/category/http-categ
 const ConfigureRouterProduct = require('./src/adapters/http/product/http-product-router');
 const ConfigureRouterUser = require('./src/adapters/http/user/http-user-router');
 const ConfigureRouterOrder = require('./src/adapters/http/order/http-order-router');
+const ConfigureRouterSize = require('./src/adapters/http/size/http-size-router');
 
 /**
  * UseCases
@@ -30,6 +32,7 @@ const UseCasesCategory = require('./src/application/usecases/usecases-category')
 const UseCasesProduct = require('./src/application/usecases/usecases-product');
 const UseCasesUser = require('./src/application/usecases/usecases-user');
 const UseCasesOrder = require('./src/application/usecases/usecases-order');
+const UseCasesSize = require('./src/application/usecases/usecases-size');
 
 (async () => {
     const postgresClient = await createPostgresClient(
@@ -82,6 +85,15 @@ const UseCasesOrder = require('./src/application/usecases/usecases-order');
     const configureOrderRouter = new ConfigureRouterOrder(useCasesOrder);
     const routerOrder = configureOrderRouter.setRouter();
     server.addRouter('/api/v1/orders', routerOrder);
+
+    // size
+    const postgresRepositorySize = new PostgresRepositorySize(
+        postgresClient,
+    );
+    const useCasesSize = new UseCasesSize(postgresRepositorySize);
+    const configureSizeRouter = new ConfigureRouterSize(useCasesSize);
+    const routerSize = configureSizeRouter.setRouter();
+    server.addRouter('/api/v1/sizes', routerSize);
 
     server.listen(envs.PORT);
 })();

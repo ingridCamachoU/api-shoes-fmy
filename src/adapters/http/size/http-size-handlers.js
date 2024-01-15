@@ -1,35 +1,11 @@
-module.exports = class HandlersProduct {
-    constructor(productUseCases) {
-        this.productUseCases = productUseCases;
+module.exports = class HandlersSize {
+    constructor(sizeUseCases) {
+        this.sizeUseCases = sizeUseCases;
     }
 
-    getProductHandler = async (req, res) => {
+    getSizeHandler = async (req, res) => {
         try {
-            const { id } = req.params;
-            const {
-                message,
-                code,
-                data,
-                error = null,
-            } = await this.productUseCases.getOneProductUseCase(
-                parseInt(id, 10),
-            );
-            if (code >= 400) return res.status(code).send({ message, error });
-            return res.status(code).send({
-                message,
-                data,
-            });
-        } catch (error) {
-            return res.status(500).send({
-                code: 'fail',
-                message: 'there was an internal error',
-            });
-        }
-    };
-
-    getProductsHandler = async (req, res) => {
-        try {
-            const { message, code } = await this.productUseCases.getProductsUseCase(
+            const { message, code } = await this.sizeUseCases.getSizesUseCase(
                 req.query,
             );
             if (code >= 400) return res.status(code).send(message);
@@ -44,13 +20,13 @@ module.exports = class HandlersProduct {
         }
     };
 
-    postProductHandler = async (req, res) => {
+    postSizeHandler = async (req, res) => {
         try {
             const {
                 message,
                 code,
                 error = null,
-            } = await this.productUseCases.createProductUseCase(
+            } = await this.sizeUseCases.createSizeUseCase(
                 req.body,
             );
             if (code >= 400) return res.status(code).send({ message, error });
@@ -65,7 +41,7 @@ module.exports = class HandlersProduct {
         }
     };
 
-    postSizeNewProductHandler = async (req, res) => {
+    putSizeHandler = async (req, res) => {
         try {
             const { id } = req.params;
             const {
@@ -73,7 +49,7 @@ module.exports = class HandlersProduct {
                 code,
                 data,
                 error = null,
-            } = await this.productUseCases.createNewZiseProduct(req.body, id);
+            } = await this.sizeUseCases.updateSizesUseCase(req.body, id);
 
             if (code === 400) return res.status(code).send({ message, error });
             return res.status(code).send({
@@ -88,38 +64,19 @@ module.exports = class HandlersProduct {
         }
     };
 
-    putProductHandler = async (req, res) => {
+    deleteSizeHandler = async (req, res) => {
         try {
             const { id } = req.params;
             const {
                 message,
                 code,
-                data,
                 error = null,
-            } = await this.productUseCases.updateProductUseCase(req.body, id);
+            } = await this.sizeUseCases.deleteSizeUseCase(id);
 
             if (code === 400) return res.status(code).send({ message, error });
             return res.status(code).send({
-                message,
-                data,
+                data: message,
             });
-        } catch (error) {
-            return res.status(500).send({
-                code: 'fail',
-                message: 'there was an internal error',
-            });
-        }
-    };
-
-    deleteProductHandler = async (req, res) => {
-        try {
-            const { id } = req.params;
-            const {
-                code,
-                data,
-            } = await this.productUseCases.deleteProductUseCase(id);
-
-            return res.status(code).send({ data });
         } catch (error) {
             return res.status(500).send({
                 code: 'fail',
