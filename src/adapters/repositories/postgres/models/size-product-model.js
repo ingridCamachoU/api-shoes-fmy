@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const SizeProductModel = (Client, sizeModel, productModel) => {
-    const sizeProduct = Client.define(
+    const sizeProductModel = Client.define(
         'sizes_products',
         {
             id: {
@@ -40,23 +40,20 @@ const SizeProductModel = (Client, sizeModel, productModel) => {
             deletedAt: 'deleted_at',
         },
     );
-    sizeModel.hasMany(sizeProduct, {
-        foreignKey: 'id',
-    });
-    sizeProduct.belongsTo(sizeModel, {
-        as: 'size',
-        foreignKey: 'size_id',
-    });
 
-    productModel.hasMany(sizeProduct, {
-        foreignKey: 'id',
-    });
-    sizeProduct.belongsTo(productModel, {
-        as: 'product',
+    productModel.belongsToMany(sizeModel, {
+        through: sizeProductModel,
         foreignKey: 'product_id',
+        as: 'sizes',
     });
 
-    return sizeProduct;
+    sizeModel.belongsToMany(productModel, {
+        through: sizeProductModel,
+        foreignKey: 'size_id',
+        as: 'products',
+    });
+
+    return sizeProductModel;
 };
 
 module.exports = {

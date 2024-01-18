@@ -28,30 +28,17 @@ class PostgresRepositoryProducts {
     // get one product with the parameters
     async getOneProductRepository(id) {
         try {
-            const sizeInfo = await this.client.models.sizes_products.findAll({
-                where: {
-                    product_id: id,
-                    deleted_at: { [Op.is]: null },
-                },
+            const result = await this.productModel.findAll({
+                where: { id, deleted_at: { [Op.is]: null } },
                 include: [
                     {
                         model: this.sizeModel,
-                        as: 'size',
-                        attributes: ['number'],
-                        order: [['number', 'ASC']],
+                        as: 'sizes',
+                        attributes: ['id', 'number'],
+                        through: {
+                            attributes: ['amount'],
+                        },
                     },
-                ],
-                attributes: [
-                    'id',
-                    'amount',
-                ],
-                order: [['size', 'number', 'ASC']],
-                raw: true,
-            });
-
-            const result = await this.client.models.products.findAll({
-                where: { id, deleted_at: { [Op.is]: null } },
-                include: [
                     {
                         model: this.categoryModel,
                         as: 'category',
@@ -70,13 +57,7 @@ class PostgresRepositoryProducts {
                     'images',
                 ],
             });
-
-            const product = {
-                ...result,
-                sizes: sizeInfo,
-            };
-
-            return [product, null, 200];
+            return [result, null, 200];
         } catch (error) {
             console.log(`Sequelize error in set products completed: ${error.parent.sqlMessage}`);
 
@@ -87,12 +68,26 @@ class PostgresRepositoryProducts {
     async getAllProductRepository(query) {
         try {
             const {
-                search,
-                category,
+                search = null,
+                category = null,
+                priceMin = null,
+                priceMax = null,
+                color = null,
+                size = null,
             } = query;
+
             const searchFields = ['name', 'description', 'code', '$category.name$'];
+
             const options = {
                 include: [
+                    {
+                        model: this.sizeModel,
+                        as: 'sizes',
+                        attributes: ['id', 'number'],
+                        through: {
+                            attributes: ['amount'],
+                        },
+                    },
                     {
                         model: this.categoryModel,
                         as: 'category',
@@ -110,26 +105,45 @@ class PostgresRepositoryProducts {
                     'gender',
                     'images',
                 ],
-
                 where: {
                     deleted_at: { [Op.is]: null },
                 },
                 order: [['name', 'ASC']],
             };
 
-            // search products by name, description, code, category, mark, model
+            // search products by name, description, code, category
             if (search) {
                 options.where[Op.or] = searchFields.reduce((acc, field) => {
                     acc[field] = { [Op.iLike]: `%${search}%` };
                     return acc;
                 }, {});
             }
-            // filter products by category, mark and model
-            if (category) options.where['$category.name$'] = { [Op.iLike]: `%${category}%` };
 
-            const result = await this.client.models.products.findAll(options);
-            return [{ data: result }, null];
+            // filter products by category
+            if (category) options.where['$category.id$'] = category;
+
+            // Apply price range filter
+            if (priceMin && priceMax) {
+                options.where.price = {
+                    [Op.between]: [parseFloat(priceMin), parseFloat(priceMax)],
+                };
+            } else if (priceMin) {
+                options.where.price = { [Op.gte]: parseFloat(priceMin) };
+            } else if (priceMax) {
+                options.where.price = { [Op.lte]: parseFloat(priceMax) };
+            }
+
+            // filter products by color
+            if (color) options.where.$color$ = { [Op.iLike]: `%${color}%` };
+
+            if (size) options.where['$sizes.id$'] = size;
+
+            const productsWithSizes = await this.productModel.findAll(options);
+
+            console.log(options);
+            return [{ data: productsWithSizes }, null];
         } catch (error) {
+            console.log(error);
             return [{ data: [] }, error];
         }
     }
