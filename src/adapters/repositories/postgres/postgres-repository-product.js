@@ -176,6 +176,7 @@ class PostgresRepositoryProducts {
                     return createdSize;
                 }),
             );
+            console.log(payload)
             return [{ data: result }, null];
         } catch (error) {
             return [{ data: [] }, error];

@@ -49,7 +49,6 @@ module.exports = class ConfigureRouterProduct {
                 check('sizes', 'sizes is required').not().isEmpty(),
                 check('description', 'description is required').not().isEmpty(),
                 checkExact([
-                    body('talla').isNumeric(),
                     body('price').isNumeric(),
                     body('stock').isNumeric(),
                     body('category').isNumeric(),
