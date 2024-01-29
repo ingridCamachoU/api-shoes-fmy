@@ -37,10 +37,6 @@ class PostgresRepositoryOrder {
                 raw: true,
             });
 
-            totals.forEach((total) => {
-                console.log(`Total para la orden ${total.order_id}: $${total.total}`);
-            });
-
             const result = await this.client.models.orders.findAll({
                 where: { deleted_at: { [Op.is]: null } },
                 include: [

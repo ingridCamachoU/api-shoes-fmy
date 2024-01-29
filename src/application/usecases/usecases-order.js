@@ -19,8 +19,6 @@ class UseCasesOrder {
     }
 
     async createOrderUseCase(payload) {
-        console.log('result:', payload);
-        console.log('Result:', JSON.stringify(payload));
         const [, error] = await this.repositoryOrder.createOrderRepository(payload);
         if (!error) return { message: 'Created', code: 201 };
         return { message: 'Conflict', code: 409, error };

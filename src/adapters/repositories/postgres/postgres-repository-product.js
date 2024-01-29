@@ -73,6 +73,7 @@ class PostgresRepositoryProducts {
                 priceMin = null,
                 priceMax = null,
                 color = null,
+                gender = null,
                 size = null,
             } = query;
 
@@ -136,11 +137,13 @@ class PostgresRepositoryProducts {
             // filter products by color
             if (color) options.where.$color$ = { [Op.iLike]: `%${color}%` };
 
+            // filter products by gender
+            if (gender) options.where.$gender$ = { [Op.iLike]: `%${gender}%` };
+
             if (size) options.where['$sizes.id$'] = size;
 
             const productsWithSizes = await this.productModel.findAll(options);
 
-            console.log(options);
             return [{ data: productsWithSizes }, null];
         } catch (error) {
             console.log(error);
@@ -176,7 +179,6 @@ class PostgresRepositoryProducts {
                     return createdSize;
                 }),
             );
-            console.log(payload)
             return [{ data: result }, null];
         } catch (error) {
             return [{ data: [] }, error];
@@ -194,7 +196,6 @@ class PostgresRepositoryProducts {
                             size_id: size.size_id,
                         },
                     });
-                    console.log(sizeProducts);
                     if (sizeProducts.length === 0) {
                         const createdSize = await this.client.models.sizes_products.create({
                             amount: size.amount,
