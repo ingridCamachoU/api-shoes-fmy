@@ -46,8 +46,6 @@ module.exports = class ConfigureRouterProduct {
                 check('name', 'name is required').not().isEmpty(),
                 check('price', 'price is required').not().isEmpty(),
                 check('gender', 'gender is required').not().isEmpty(),
-                check('sizes', 'sizes is required').not().isEmpty(),
-                check('description', 'description is required').not().isEmpty(),
                 checkExact([
                     body('price').isNumeric(),
                     body('stock').isNumeric(),
