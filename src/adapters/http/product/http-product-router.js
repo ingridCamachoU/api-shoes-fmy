@@ -54,8 +54,8 @@ module.exports = class ConfigureRouterProduct {
                     body('color').isLength({ min: 3 }),
                     body('price').isLength({ min: 3 }),
                     body('description').isLength({ min: 3 }),
-                    body('description').isLength({ min: 4 }),
-                    body('gender').isLength({ min: 4 })], {
+                    body('sizes').isArray(),
+                    body('gender').isString()], {
                     message: 'Too many fields specified',
                 }),
                 validRequest,
