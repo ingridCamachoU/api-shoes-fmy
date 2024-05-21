@@ -216,35 +216,74 @@ class PostgresRepositoryProducts {
     }
 
     async updateProductRepository(payload, id) {
+        const transaction = await this.client.transaction();
         try {
             const now = moment().tz('UTC');
-            for (const size of payload.sizes) {
-                // eslint-disable-next-line no-await-in-loop
-                await this.client.models.sizes_products.update(
-                    {
-                        amount: size.amount,
-                        updated_at: now,
-                    },
-                    {
-                        where: {
+
+            // Verifica si existen tallas para este producto
+            const existingSizes = await this.client.models.sizes_products.findAll({
+                where: { product_id: id },
+                transaction,
+            });
+
+            // Si no se envían tallas en el payload, elimina todas las tallas existentes
+            if (!payload.sizes || payload.sizes.length === 0) {
+                await this.client.models.sizes_products.destroy({
+                    where: { product_id: id },
+                    transaction,
+                });
+            } else {
+                // Si se envían tallas en el payload, actualiza o elimina según corresponda
+                for (const size of existingSizes) {
+                    const newSize = payload.sizes.find(s => s.size_id === size.size_id);
+                    if (newSize) {
+                        // eslint-disable-next-line no-await-in-loop
+                        await this.client.models.sizes_products.update(
+                            { amount: newSize.amount, updated_at: now },
+                            { where: { product_id: id, size_id: size.size_id },transaction},
+                        );
+                    } else {
+                        // Si la talla no existe en el payload, elimina la talla
+                        // eslint-disable-next-line no-await-in-loop
+                        await this.client.models.sizes_products.destroy({
+                            where: { product_id: id, size_id: size.size_id },
+                            transaction,
+                        });
+                    }
+                }
+
+                // Agrega nuevas tallas que no existían previamente
+                const existingSizeIds = existingSizes.map(size => size.size_id);
+                const newSizes = payload.sizes.filter(
+                    size => !existingSizeIds.includes(size.size_id)
+                );
+                if (newSizes.length > 0) {
+                    await this.client.models.sizes_products.bulkCreate(
+                        newSizes.map(size => ({
                             product_id: id,
                             size_id: size.size_id,
-                            deleted_at: null,
-                            amount: { [Op.ne]: size.amount },
-                        },
-                    },
-                );
+                            amount: size.amount,
+                            created_at: now,
+                            updated_at: now,
+                        })),
+                        { transaction },
+                    );
+                }
             }
+
+            // Actualiza la información del producto
             const result = await this.client.models.products.update(
-                {
-                    ...payload,
-                    updated_at: now,
-                },
-                { where: { id } },
+                { ...payload, updated_at: now },
+                { where: { id }, transaction },
             );
+
+            // Confirma la transacción
+            await transaction.commit();
 
             return [result, null, 200];
         } catch (error) {
+            // Si hay algún error, revierte la transacción
+            await transaction.rollback();
             console.log(`Sequelize error in set products completed: ${error.parent.sqlMessage}`);
             return [null, error, 400];
         }
