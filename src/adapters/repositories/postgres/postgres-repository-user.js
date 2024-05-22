@@ -98,11 +98,14 @@ class PostgresRepositoryUser {
     async updateUserRepository(payload, id) {
         try {
             const now = moment().tz('UTC');
+            const passwordHash = await encrypt(payload.password);
+            const updatedPayload = {
+                ...payload,
+                password: passwordHash,
+                updated_at: now,
+            };
             const result = await this.client.models.users.update(
-                {
-                    ...payload,
-                    updated_at: now,
-                },
+                updatedPayload,
                 { where: { id } },
             );
             return [result, null, 200];
