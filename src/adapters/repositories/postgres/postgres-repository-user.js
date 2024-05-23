@@ -98,12 +98,23 @@ class PostgresRepositoryUser {
     async updateUserRepository(payload, id) {
         try {
             const now = moment().tz('UTC');
-            const passwordHash = await encrypt(payload.password);
-            const updatedPayload = {
-                ...payload,
-                password: passwordHash,
-                updated_at: now,
-            };
+            const updatedPayload = { updated_at: now };
+
+            // Solo actualizar los campos proporcionados en el payload
+            if (payload.password) {
+                const passwordHash = await encrypt(payload.password);
+                updatedPayload.password = passwordHash;
+            }
+
+            // Agregar los otros campos opcionales
+            if (payload.cc) updatedPayload.cc = payload.cc;
+            if (payload.name) updatedPayload.name = payload.name;
+            if (payload.phone) updatedPayload.phone = payload.phone;
+            if (payload.email) updatedPayload.email = payload.email;
+            if (payload.role) updatedPayload.role = payload.role;
+            if (payload.address) updatedPayload.address = payload.address;
+            // Agrega más campos según tu modelo
+
             const result = await this.client.models.users.update(
                 updatedPayload,
                 { where: { id } },
