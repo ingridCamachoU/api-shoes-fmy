@@ -115,11 +115,13 @@ class PostgresRepositoryUser {
             if (payload.address) updatedPayload.address = payload.address;
             // Agrega más campos según tu modelo
 
+            // eslint-disable-next-line no-unused-vars
             const result = await this.client.models.users.update(
                 updatedPayload,
                 { where: { id } },
             );
-            return [result, null, 200];
+            const user = await this.client.models.users.findOne({ where: { id } });
+            return [user, null, 200];
         } catch (error) {
             console.log(`Sequelize error in set users completed: ${error.parent.sqlMessage}`);
 
