@@ -60,6 +60,10 @@ module.exports = class ConfigureRouterProvider {
                     body('role').isLength({ min: 3 })], {
                     message: 'Too many fields specified',
                 }),
+                check('email').custom(async (email) => {
+                    const user = await this.userUseCase.getUserByEmailUseCase(email);
+                    if (user) throw new Error(`this user email ${email} exists...`);
+                }),
                 validRequest,
             ],
             userHandlers.postUserHandler,
