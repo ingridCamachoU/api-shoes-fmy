@@ -48,5 +48,9 @@ To have access for editing or deletion or display to all users it is only with t
 
  - npm run dev
 
+### Api deployed
+
+https://api-shoes-fmy.vercel.app/api/v1/
+
 ## Licencia
 This project is under the ISC license.
